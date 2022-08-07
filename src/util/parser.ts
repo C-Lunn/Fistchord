@@ -18,6 +18,9 @@ class ChordLine extends Array {
     }
 
     toString(){
+        if(this.length == 7) {
+            console.log("burger")
+        }
         let line = '';
         let line_ptr = 0;
         for(const chord of this){
@@ -29,13 +32,21 @@ class ChordLine extends Array {
     }
 
     static fromString(str){
+        str = str.replaceAll('#', 'SH');
         let split_str = str.split(/\b/);
+        for (let i = 0; i < split_str.length; i++) {
+            split_str[i] = split_str[i].replaceAll("SH", "#");
+        }
         let line_ptr = 0;
         const line = new ChordLine();
         for(const e of split_str){
+            if(e.trim().length != 0){
+                line.push(Chord.fromString(e, line_ptr));
+            }
             line_ptr += e.length;
-            if(e.trim().length == 0) continue;
-            line.push(Chord.fromString(e, line_ptr));
+        }
+        if(line.includes(undefined)) {
+            console.log("oh aye summet's gone off ere like")
         }
         return line;
     }
@@ -143,4 +154,16 @@ const parse = (data: string) => {
     return sections;
 };
 
-export default parse;
+function parseUG(text: string) {
+    text = text.replaceAll("[tab]", "");
+    text = text.replaceAll("[/tab]", "");
+    text = text.replaceAll("[ch]", "");
+    text = text.replaceAll("[/ch]", "");
+    text = text.replaceAll("\r", "");
+    return parse(text);
+}
+
+export {
+    parse,
+    parseUG,
+};

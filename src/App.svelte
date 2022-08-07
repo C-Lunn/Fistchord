@@ -5,7 +5,7 @@
     import Lyrics from "./Lyrics.svelte";
 
     import testLyric from "./assets/hotline-bling.txt?raw";
-    import parse from "./util/parser";
+    import { parse, parseUG } from "./util/parser";
     let lyrics = parse(testLyric);
 
     interface ZoneObj {
@@ -96,12 +96,10 @@
     let active_ptr_obj: ZoneObj = zones[zoneNames[sel]];
 
     function nextSelection() {
-        //document.querySelector(active_ptr_obj.target).classList.remove("pactive");
         do {
             sel = (sel + 1) % zoneNames.length;
         } while (!zones[zoneNames[sel]].active);
         active_ptr_obj = zones[zoneNames[sel]];
-        //document.querySelector(active_ptr_obj.target).classList.add("pactive");
     }
 
     onMount(() => {
@@ -127,14 +125,30 @@
             }
         }
 
-        // document.getElementById(
-        //     "capo-number"
-        // ).innerText = `${zones.capo.state}`;
-
         window.addEventListener("keydown", keylistener);
 
         handleScroll();
     });
+
+    function handleSidebarSelectChange(ev){
+        switch(true) {
+            case ev.detail.id.startsWith("font"):
+                zones.font.state = ev.detail.value;
+                break;
+            case ev.detail.id.startsWith("chords"):
+                zones.chords.state = ev.detail.value;
+                break;
+            case ev.detail.id.startsWith("capo"):
+                handleCapo(ev.detail.dir);  
+                break;
+        }
+    }
+
+    async function handleUGLink(ev) {
+        const r = await fetch(`http://localhost:3000/ug?link=${ev.detail.link}`);
+        const t = await r.text();
+        lyrics = parseUG(t);
+    }
 </script>
 
 <Sidebar
@@ -143,6 +157,8 @@
     fontSize={zones.font.state}
     capo={zones.capo.state}
     ptr={active_ptr_obj.target}
+    on:sidebarSelectChange={handleSidebarSelectChange}
+    on:ugLink={handleUGLink}
 />
 <LyricPointer ptr={active_ptr_obj.target} />
 <Lyrics

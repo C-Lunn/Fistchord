@@ -29,6 +29,10 @@
     }));
 
     const dispatch = createEventDispatcher();
+
+    function ge (e: HTMLElement) {
+        return (e as HTMLInputElement).value
+    }
 </script>
 
 <div {id} class="sidebar">
@@ -37,19 +41,36 @@
     </div>
     <div class="section">
         <h2 class="header">
-            <div class="pointer sidebar-pointer{ptr == "#font-pointer" ? ' pactive' : ''}" id="font-pointer">▶
-            </div>FONT SIZE</h2>
+            <div
+                class="pointer sidebar-pointer{ptr == '#font-pointer'
+                    ? ' pactive'
+                    : ''}"
+                id="font-pointer"
+            >
+                ▶
+            </div>
+            FONT SIZE
+        </h2>
 
         <Select
             options={fontOptions}
             value={fontSize}
             on:change={(e) => dispatch("fontsize", e.detail)}
+            on:sidebarSelectChange
         />
     </div>
     <div class="section">
         <h2 class="header">
-            <div class="pointer sidebar-pointer{ptr == "#chords-pointer" ? ' pactive' : ''}" id="chords-pointer">▶</div>
-            CHORDS</h2>
+            <div
+                class="pointer sidebar-pointer{ptr == '#chords-pointer'
+                    ? ' pactive'
+                    : ''}"
+                id="chords-pointer"
+            >
+                ▶
+            </div>
+            CHORDS
+        </h2>
         <Select
             id="chords"
             options={[
@@ -64,8 +85,7 @@
                         paddingRight: "0px",
                         paddingTop: "7px",
                         paddingBottom: "7px",
-                        
-                    }
+                    },
                 },
                 {
                     id: "chords-false",
@@ -78,20 +98,68 @@
                         paddingRight: "15px",
                         paddingTop: "7px",
                         paddingBottom: "7px",
-                    }
+                    },
                 },
             ]}
             value={showChords}
             on:change={(e) => dispatch("chords", e.detail)}
+            on:sidebarSelectChange
         />
     </div>
     {#if showChords}
-    <div class="section">
-        <h2 class="header">
-            <div class="pointer sidebar-pointer {ptr == "#capo-pointer" ? ' pactive' : ''}" id="capo-pointer">▶</div>CAPO</h2>
-        <div id="capo-number">{capo}</div>
-      </div>
+        <div class="section">
+            <h2 class="header">
+                <div
+                    class="pointer sidebar-pointer {ptr == '#capo-pointer'
+                        ? ' pactive'
+                        : ''}"
+                    id="capo-pointer"
+                >
+                    ▶
+                </div>
+                CAPO
+            </h2>
+            <div id="capo-number-holder">
+                <div
+                    id="capo-down"
+                    class="capo-change"
+                    on:click={(e) =>
+                        dispatch("sidebarSelectChange", {
+                            id: "capo",
+                            dir: "down",
+                        })}
+                >
+                    -
+                </div>
+                <div id="capo-number">{capo}</div>
+                <div
+                    id="capo-up"
+                    class="capo-change"
+                    on:click={(e) =>
+                        dispatch("sidebarSelectChange", {
+                            id: "capo",
+                            dir: "up",
+                        })}
+                >
+                    +
+                </div>
+            </div>
+        </div>
     {/if}
+
+    <div class="section">
+        <h2 class="header">UG LINK</h2>
+        <input type="text" id="ug-link" />
+        <div
+            id="ug-link-button"
+            on:click={(e) =>
+                dispatch("ugLink", {
+                    link: ge(document.getElementById("ug-link")),
+                })}
+        >
+            LOAD
+        </div>
+    </div>
 </div>
 
 <style>
@@ -102,6 +170,7 @@
         display: grid;
         gap: 6rem;
         padding-top: 4rem;
+        user-select: none;
     }
 
     .section {
@@ -125,9 +194,42 @@
         line-height: 0.8em;
         font-weight: bold;
         color: rgb(240, 240, 240);
+        min-width: 98.7px;
+        text-align: center;
     }
 
     .logo {
         width: 80%;
+    }
+
+    #capo-number-holder {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        place-items: center;
+        gap: 0.5rem;
+    }
+
+    .capo-change {
+        font-size: 2em;
+        color: rgb(150, 150, 150);
+        border-radius: 999px;
+        border-color: #222;
+        border-width: 4px;
+        border-style: solid;
+        display: grid;
+        place-items: center;
+        line-height: 0;
+        height: 32px;
+        width: 32px;
+        border-radius: 999px;
+    }
+
+    .capo-change:hover {
+        color: rgb(240, 240, 240);
+        cursor: default;
+        background-color: rgb(100, 100, 100);
+        border-color: rgb(240, 240, 240);
+        border-width: 4px;
+        border-style: solid;
     }
 </style>

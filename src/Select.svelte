@@ -50,7 +50,7 @@
             id={option.id}
             class="ui-select__option{option.value === value ? ' selected' : ''}"
             style={mekStyle(option.style)}
-            on:click={(e) => dispatch("change", { detail: option.value })}
+            on:click={(e) => dispatch("sidebarSelectChange", { id: option.id, value: option.value })}
             use:equalwidth={eqsize}
         >
             {option.label}
