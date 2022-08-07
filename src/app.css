@@ -1,23 +1,4 @@
-@font-face {
-    font-family: PlexSans;
-    src: url('assets/IBMPlexSans-Medium.ttf');
-}
-
-@font-face {
-    font-family: PlexSans;
-    src: url('assets/IBMPlexSans-Bold.ttf');
-    font-weight: bold;
-}
-@font-face {
-    font-family: Poppins;
-    src: url('assets/Poppins-Medium.ttf');
-}
-
-@font-face {
-    font-family: Poppins;
-    src: url('assets/Poppins-Bold.ttf');
-    font-weight: bold;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
 
 html {
     height: 100%;
@@ -38,159 +19,54 @@ body {
     display: grid;
     grid-template-areas: "side pointer lyrics";
     grid-template-columns: 300px 32px auto;
-    gap: 1em;
+    gap: 0em;
     height: 100%;
 }
 
-#sidebar {
-    background-color: #222;
-    padding-top: 10px;
-    min-width: 300px;
-    max-width: 300px;
-    color: rgb(240, 240, 240)
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  line-height: 1.2em;
+  margin: 0;
 }
 
-.sidebar-header-text {
-    min-width: none;
-    font-size: 2.3em;
-    font-weight: bold;
-    color: rgb(240, 240, 240);
-    padding-top: 0px;
-    width: 100%;
-    text-align: center;
-}
+/* pre {
+  line-height: 0.7em;
+  margin: 0;
+  font-family: "Poppins";
+} */
 
-.sidebar-header {
-    display: grid;
-    gap: 0rem;
-    grid-auto-flow: column;
-    grid-template-columns: 0px auto;
-    padding-top: 60px;
-
-}
-
-.sidebar-pointer {
-    font-size: 2.3em;
-    font-weight: bold;
-    color: red;
-    max-width: 0px;
-    padding-left: 10px;
-}
-
-#lyrics-pointer {
-    padding-top: 20px;
-    min-width: 32px;
-    color: red;
-    font-size: 2.3em;
-    align-items: center;
-    justify-content: center;
-    display: grid;
-    margin-bottom: 80px;
-}
-
+.lyr-pointer.pactive,
 .pointer.pactive{
-    opacity: 1;
+  opacity: 1;
 }
 
 .pointer{
-    opacity: 0;
+  opacity: 0;
+  font-size: 1em;
+  font-weight: bold;
+  color: red;
+  max-width: 0px;
+  padding-left: 10px;
+  display: flex;
+  transform: translateY(5px);
 }
 
-#lyrics {
-    background-color: rgb(238, 238, 238);
-    height: calc(100% - 2em);
-    overflow-y: hidden;
-    font-size: 20pt;
-    margin-top: 30px;
-    /* margin-left: 50px; */
-    float: left;
-    width: 90%;
-    font-size: 36px;
+.lyr-pointer{
+  opacity: 0;
+  font-size: 2em;
+  font-weight: bold;
+  color: red;
+  max-width: 0px;
+  padding-left: 0px;
+  display: flex;
+  transform: translateY(5px);
 }
 
-.verse p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-#capo-number {
-    font-size: 6em;
-    font-weight: bold;
-    color: rgb(240, 240, 240);
-    text-align: center;
-}
-
-.on-off{
-    display: grid;
-    gap: 0.5rem;
-    grid-auto-flow: column;
-    grid-template-columns: auto auto;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
-}
-
-.sidebar-select {
-    border-style: none;
-    height: 70px;
-    font-size: 2.5em;
-    font-weight: bold;
-    overflow: hidden;
-    min-width: 100px;
-    text-align: center;
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    color:rgb(158, 158, 158)
-}
-
-.aaaaa .sidebar-select {
-    border-style: none;
-    height: 70px;
-    font-size: 2.5em;
-    font-weight: bold;
-    overflow: hidden;
-    min-width: 20px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color:rgb(158, 158, 158)
-}
-
-.sidebar-select.selected {
-    border-color: rgb(240, 240, 240);
-    border-style: solid;
-    border-width: 3px;
-    color: rgb(240, 240, 240);
-}
-
-.ignore {
-    min-height: 1000px;
-}
-
-#font-smallest {
-    font-size: 1em;
-}
-#font-small {
-    font-size: 1.2em;
-}
-#font-normal {
-    font-size: 1.5em;
-}
-#font-large {
-    font-size: 2.5em;
-}
-#font-largest {
-    font-size: 3.5em;
-}
-
-.aaaaa{
-    display: grid;
-    gap: 0.1rem;
-    grid-auto-flow: column;
-    grid-template-columns: auto auto auto auto auto;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
+.header {
+  width: 100%;
+  text-align: center;
 }
