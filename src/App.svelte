@@ -4,9 +4,9 @@
     import Sidebar from "./Sidebar.svelte";
     import Lyrics from "./Lyrics.svelte";
 
-    import testLyric from "./assets/doin-your-mom.txt?raw";
+    import testLyric from "./assets/hotline-bling.txt?raw";
     import parse from "./util/parser";
-    const lyrics = parse(testLyric);
+    let lyrics = parse(testLyric);
 
     interface ZoneObj {
         target: string;
@@ -22,17 +22,23 @@
     };
 
     async function handleCapo(dir) {
+        let st;
         if (dir == "up") {
-            zones.capo.state = (zones.capo.state + 1) % 11;
+            zones.capo.state = (zones.capo.state + 1) % 12;
+            st = -1;
         } else {
-            zones.capo.state = (zones.capo.state - 1) % 11;
+            zones.capo.state = (zones.capo.state - 1) % 12;
             if (zones.capo.state < 0) {
                 zones.capo.state = 11;
             }
+            st = 1;
         }
-        // document.getElementById(
-        //     "capo-number"
-        // ).innerText = `${zones.capo.state}`;
+        for (const sec of lyrics) {
+            for (const line of sec.lines) {
+                line.chords?.transpose(st);
+            }
+        }
+        lyrics = lyrics;
     }
 
     async function handleChords(_) {
@@ -95,7 +101,6 @@
             sel = (sel + 1) % zoneNames.length;
         } while (!zones[zoneNames[sel]].active);
         active_ptr_obj = zones[zoneNames[sel]];
-        console.log(active_ptr_obj);
         //document.querySelector(active_ptr_obj.target).classList.add("pactive");
     }
 
@@ -134,13 +139,20 @@
 
 <Sidebar
     id="sidebar"
-    showChords = {zones.chords.state}
-    fontSize = {zones.font.state}
-    capo = {zones.capo.state}
-    ptr = {active_ptr_obj.target}
+    showChords={zones.chords.state}
+    fontSize={zones.font.state}
+    capo={zones.capo.state}
+    ptr={active_ptr_obj.target}
 />
 <LyricPointer ptr={active_ptr_obj.target} />
-<Lyrics fontSize={zones.font.state} {lyrics} showChords={zones.chords.state} {KEYS} ptr={active_ptr_obj.target} />
+<Lyrics
+    fontSize={zones.font.state}
+    {lyrics}
+    showChords={zones.chords.state}
+    {KEYS}
+    ptr={active_ptr_obj.target}
+    capo={zones.capo.state}
+/>
 
 <style>
     .verse {
