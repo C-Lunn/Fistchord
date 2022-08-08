@@ -134,7 +134,7 @@ const parse = (data: string) => {
         }
 
         let stanzaCtr = 0;
-        while (stanzaCtr < 4 && !isSection(r.nextLine) && !r.eof) {
+        while (stanzaCtr < 8 && !isSection(r.nextLine) && !r.eof) {
             const line: Line = {};
 
             const text = r.readLine();
